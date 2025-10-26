@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"S.H.C" Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    .fade-in { 
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans transition-colors duration-500">
+
+<!-- Navbar -->
+<nav class="bg-white shadow-md fixed w-full z-20 transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">S.H.C</h1>
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex space-x-6">
+            <li><a href="#home" class="hover:text-blue-600">Home</a></li>
+            <li><a href="#about" class="hover:text-blue-600">About</a></li>
+            <li><a href="#projects" class="hover:text-blue-600">Projects</a></li>
+            <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
+            <li><button id="modeToggle" class="ml-2 px-3 py-1 border rounded hover:bg-gray-200 transition">Dark</button></li>
+        </ul>
+        <!-- Mobile Hamburger -->
+        <div class="md:hidden flex items-center">
+            <button id="hamburger" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <!-- Mobile Menu -->
+    <ul id="mobileMenu" class="hidden flex-col bg-white w-full text-center md:hidden">
+        <li class="py-2"><a href="#home" class="block hover:text-blue-600">Home</a></li>
+        <li class="py-2"><a href="#about" class="block hover:text-blue-600">About</a></li>
+        <li class="py-2"><a href="#projects" class="block hover:text-blue-600">Projects</a></li>
+        <li class="py-2"><a href="#contact" class="block hover:text-blue-600">Contact</a></li>
+        <li class="py-2"><button id="modeToggleMobile" class="px-3 py-1 border rounded hover:bg-gray-200 transition">Dark</button></li>
+    </ul>
+</nav>
+
+<!-- Home Section -->
+<section id="home" class="h-screen flex flex-col justify-center items-center bg-blue-50 transition-colors duration-500">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-blue-700 fade-in">Hi, I'm Chyon</h2>
+    <p class="text-xl md:text-2xl mb-6 text-gray-700 fade-in">Aspiring Front-End Web Developer</p>
+    <a href="#projects" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition fade-in">See My Work</a>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 px-4 bg-white transition-colors duration-500">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800 fade-in">About Me</h2>
+        <p class="text-gray-700 mb-4 fade-in">
+            I'm an 11th class student at Bakoli Government College and a passionate Front-End Web Developer. I love creating beautiful and interactive websites.
+        </p>
+        <p class="text-gray-700 fade-in">
+            Skills: HTML, CSS, JavaScript, Tailwind CSS, Responsive Design
+        </p>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-20 px-4 bg-gray-50 transition-colors duration-500">
+    <div class="max-w-6xl mx-auto text-center mb-10">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800 fade-in">My Projects</h2>
+        <p class="text-gray-700 fade-in">Here are some of the projects I have worked on:</p>
+    </div>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+        <div class="bg-white rounded shadow-md p-6 hover:shadow-xl transition fade-in">
+            <h3 class="font-bold text-xl mb-2">Project 1</h3>
+            <p class="text-gray-700 mb-4">A responsive portfolio website built with HTML, CSS, and Tailwind.</p>
+            <a href="project 1.html" class="text-blue-600 hover:underline">View Project</a>
+        </div>
+        <div class="bg-white rounded shadow-md p-6 hover:shadow-xl transition fade-in">
+            <h3 class="font-bold text-xl mb-2">Project 2</h3>
+            <p class="text-gray-700 mb-4">A small JavaScript game demonstrating DOM manipulation and logic.</p>
+            <a href="Project 2.html" class="text-blue-600 hover:underline">View Project</a>
+        </div>
+        <div class="bg-white rounded shadow-md p-6 hover:shadow-xl transition fade-in">
+            <h3 class="font-bold text-xl mb-2">Project 3</h3>
+            <p class="text-gray-700 mb-4">A responsive landing page using Tailwind CSS and custom animations.</p>
+            <a href="Project 3.html" class="text-blue-600 hover:underline">View Project</a>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 px-4 bg-white transition-colors duration-500">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800 fade-in">Contact Me</h2>
+        <p class="text-gray-700 mb-8 fade-in">Feel free to reach out to me for collaboration or any questions.</p>
+        <form class="max-w-xl mx-auto flex flex-col space-y-4">
+            <input type="text" placeholder="Your Name" class="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-600 fade-in">
+            <input type="email" placeholder="Your Email" class="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-600 fade-in">
+            <textarea placeholder="Your Message" rows="4" class="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-600 fade-in"></textarea>
+            <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition fade-in">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6 text-center transition-colors duration-500">
+    &copy; 2025 Chyon. All Rights Reserved.
+</footer>
+
+<!-- JS -->
+<script>
+    // Smooth Scroll
+    const links = document.querySelectorAll('nav a');
+    for (const link of links) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            target.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobileMenu').classList.add('hidden'); // Close mobile menu
+        });
+    }
+
+    // Light/Dark Mode Toggle
+    const modeToggle = document.getElementById('modeToggle');
+    const modeToggleMobile = document.getElementById('modeToggleMobile');
+    function toggleMode(){
+        document.body.classList.toggle('bg-gray-900');
+        document.body.classList.toggle('text-gray-100');
+        document.querySelectorAll('section, footer, nav').forEach(sec => {
+            sec.classList.toggle('bg-gray-900');
+            sec.classList.toggle('bg-white');
+        });
+        if(modeToggle) modeToggle.textContent = modeToggle.textContent === "Dark" ? "Light" : "Dark";
+        if(modeToggleMobile) modeToggleMobile.textContent = modeToggleMobile.textContent === "Dark" ? "Light" : "Dark";
+    }
+    modeToggle.addEventListener('click', toggleMode);
+    modeToggleMobile.addEventListener('click', toggleMode);
+
+    // Hamburger Toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Fade-in Animation on Scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.3 };
+    const appearOnScroll = new IntersectionObserver(function(entries, observer){
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, appearOptions);
+
+    faders.forEach(fader => appearOnScroll.observe(fader));
+</script>
+
+</body>
+</html>

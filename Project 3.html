@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Landing Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .fade-up { animation: fadeInUp 1s ease forwards; }
+    .fade-left { animation: fadeInLeft 1s ease forwards; }
+    .fade-right { animation: fadeInRight 1s ease forwards; }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 fixed w-full top-0 z-50 shadow-lg">
+    <div class="text-2xl font-bold text-cyan-400">BrandLogo</div>
+    <ul class="hidden md:flex space-x-6">
+      <li><a href="#home" class="hover:text-cyan-400 transition">Home</a></li>
+      <li><a href="#features" class="hover:text-cyan-400 transition">Features</a></li>
+      <li><a href="#pricing" class="hover:text-cyan-400 transition">Pricing</a></li>
+      <li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li>
+    </ul>
+    <button class="md:hidden text-cyan-400">☰</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-8 pt-24">
+    <div class="md:w-1/2 space-y-6 fade-left">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Build Stunning <span class="text-cyan-400">Websites</span> Easily</h1>
+      <p class="text-gray-400 text-lg">Create professional, responsive, and fast websites using Tailwind CSS and modern animations.</p>
+      <div class="space-x-4">
+        <button class="bg-cyan-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-cyan-300 transition">Get Started</button>
+        <button class="border border-cyan-400 px-6 py-3 rounded-lg hover:bg-cyan-400 hover:text-gray-900 transition">Learn More</button>
+      </div>
+    </div>
+    <div class="md:w-1/2 mt-10 md:mt-0 fade-right">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="Hero Image" class="w-72 md:w-96 mx-auto animate-pulse" />
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 bg-gray-800 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-10 fade-up">Powerful Features</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-8 max-w-6xl mx-auto">
+      <div class="p-8 bg-gray-900 rounded-2xl shadow-lg fade-up">
+        <h3 class="text-xl font-semibold text-cyan-400 mb-2">Responsive Design</h3>
+        <p class="text-gray-400">Fully responsive layout that adapts to any screen size for an optimal viewing experience.</p>
+      </div>
+      <div class="p-8 bg-gray-900 rounded-2xl shadow-lg fade-up">
+        <h3 class="text-xl font-semibold text-cyan-400 mb-2">Fast Performance</h3>
+        <p class="text-gray-400">Lightweight and optimized for speed to ensure smooth loading times and better SEO.</p>
+      </div>
+      <div class="p-8 bg-gray-900 rounded-2xl shadow-lg fade-up">
+        <h3 class="text-xl font-semibold text-cyan-400 mb-2">Modern Animations</h3>
+        <p class="text-gray-400">Custom animations add life and motion to your website without compromising performance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-20 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-10 fade-up">Simple Pricing</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-8 max-w-6xl mx-auto">
+      <div class="p-8 bg-gray-800 rounded-2xl shadow-xl hover:scale-105 transition fade-up">
+        <h3 class="text-xl font-semibold mb-4">Basic</h3>
+        <p class="text-4xl font-bold text-cyan-400 mb-4">$9<span class="text-lg text-gray-400">/mo</span></p>
+        <ul class="text-gray-400 space-y-2 mb-6">
+          <li>✔ 1 Website</li>
+          <li>✔ Basic Support</li>
+          <li>✔ Limited Features</li>
+        </ul>
+        <button class="bg-cyan-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-cyan-300 transition">Choose</button>
+      </div>
+      <div class="p-8 bg-cyan-400 text-gray-900 rounded-2xl shadow-xl hover:scale-105 transition fade-up">
+        <h3 class="text-xl font-semibold mb-4">Pro</h3>
+        <p class="text-4xl font-bold mb-4">$29<span class="text-lg text-gray-700">/mo</span></p>
+        <ul class="space-y-2 mb-6">
+          <li>✔ Unlimited Websites</li>
+          <li>✔ Priority Support</li>
+          <li>✔ All Features</li>
+        </ul>
+        <button class="bg-gray-900 text-cyan-400 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">Choose</button>
+      </div>
+      <div class="p-8 bg-gray-800 rounded-2xl shadow-xl hover:scale-105 transition fade-up">
+        <h3 class="text-xl font-semibold mb-4">Enterprise</h3>
+        <p class="text-4xl font-bold text-cyan-400 mb-4">$99<span class="text-lg text-gray-400">/mo</span></p>
+        <ul class="text-gray-400 space-y-2 mb-6">
+          <li>✔ Custom Solutions</li>
+          <li>✔ Dedicated Manager</li>
+          <li>✔ Premium Support</li>
+        </ul>
+        <button class="bg-cyan-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-cyan-300 transition">Choose</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gray-800 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-10 fade-up">Get in Touch</h2>
+    <form class="max-w-xl mx-auto space-y-6 fade-up">
+      <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:border-cyan-400" />
+      <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:border-cyan-400" />
+      <textarea placeholder="Your Message" rows="4" class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:border-cyan-400"></textarea>
+      <button type="submit" class="bg-cyan-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-cyan-300 transition">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-6 text-center bg-gray-900 border-t border-gray-700">
+    <p class="text-gray-500">© 2025 BrandLogo. All rights reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Color Catcher — Small DOM Game</title>
+  <style>
+    :root{ --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8; }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial; margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#071029,#0e1a2a); color:#e6eef6}
+    .wrap{width:920px; max-width:95%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08)); border-radius:12px;padding:20px; box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    h1{font-size:18px;margin:0}
+    .controls{display:flex; gap:8px; align-items:center}
+    button{background:var(--accent); border:none; padding:8px 12px; border-radius:8px; cursor:pointer; color:#022; font-weight:600}
+    button.secondary{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted)}
+    main{display:flex; gap:16px; margin-top:18px}
+    .board{flex:1; padding:18px; background:rgba(255,255,255,0.02); border-radius:10px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-content:start}
+    .tile{aspect-ratio:1/1; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:inset 0 -6px 18px rgba(0,0,0,0.35)}
+    .info{width:260px; min-width:200px; padding:18px; background:rgba(255,255,255,0.02); border-radius:10px}
+    .big{font-size:28px; font-weight:700; color:var(--accent)}
+    .muted{color:var(--muted); font-size:13px}
+    .log{max-height:160px; overflow:auto; margin-top:10px; padding:8px; background:rgba(255,255,255,0.01); border-radius:6px; font-size:13px}
+    footer{margin-top:12px; text-align:right; font-size:12px; color:var(--muted)}
+    .highlight{background:rgba(255,255,255,0.04); padding:6px 8px; border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap" id="gameWrap">
+    <header>
+      <div>
+        <h1>Color Catcher — small JS DOM game</h1>
+        <div class="muted">Click the tile that matches the <span id="targetColorText" class="highlight">target color</span>. Score points before time runs out!</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button class="secondary" id="resetBtn">Reset</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="board" id="board" aria-label="Game board">
+        <!-- tiles inserted by JS -->
+      </section>
+
+      <aside class="info">
+        <div>Target color</div>
+        <div style="margin-top:8px" class="big" id="targetColorDisplay">#FFFFFF</div>
+
+        <div style="margin-top:12px" class="muted">Score</div>
+        <div class="big" id="score">0</div>
+
+        <div style="margin-top:12px" class="muted">Time left</div>
+        <div class="big" id="timeLeft">30</div>
+
+        <div style="margin-top:12px" class="muted">Level</div>
+        <div id="level">1</div>
+
+        <div style="margin-top:12px" class="muted">Game log</div>
+        <div class="log" id="log"></div>
+      </aside>
+    </main>
+
+    <footer>
+      Tip: the board grows by level. Wrong clicks lose time. Good clicks give points and advance levels.
+    </footer>
+  </div>
+
+  <script>
+    // Simple DOM-based Color Catcher game demonstrating DOM manipulation and game logic.
+    (function(){
+      const boardEl = document.getElementById('board');
+      const startBtn = document.getElementById('startBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const targetText = document.getElementById('targetColorText');
+      const targetDisplay = document.getElementById('targetColorDisplay');
+      const scoreEl = document.getElementById('score');
+      const timeEl = document.getElementById('timeLeft');
+      const levelEl = document.getElementById('level');
+      const logEl = document.getElementById('log');
+
+      let score = 0;
+      let timeLeft = 30; // seconds
+      let level = 1;
+      let tilesCount = 8;
+      let targetColor = '';
+      let timerId = null;
+      let running = false;
+
+      function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+      function randomColor() {
+        // produce a readable hex color
+        const r = randInt(50,230), g = randInt(50,230), b = randInt(50,230);
+        return `#${[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}`.toUpperCase();
+      }
+
+      function log(msg){
+        const t = new Date().toLocaleTimeString();
+        const p = document.createElement('div');
+        p.textContent = `[${t}] ${msg}`;
+        logEl.prepend(p);
+      }
+
+      function setTargetColor(c){
+        targetColor = c;
+        targetDisplay.textContent = c;
+        targetDisplay.style.background = c;
+        targetDisplay.style.color = '#001';
+        targetText.style.background = c;
+        targetText.style.color = '#001';
+      }
+
+      function createTile(color){
+        const el = document.createElement('button');
+        el.className = 'tile';
+        el.setAttribute('aria-label', `color tile ${color}`);
+        el.style.background = color;
+        el.addEventListener('click', onTileClick);
+        return el;
+      }
+
+      function renderBoard(){
+        boardEl.innerHTML = '';
+        // generate a palette: include target + randoms
+        const colors = new Set();
+        colors.add(targetColor);
+        while(colors.size < tilesCount){ colors.add(randomColor()) }
+        const arr = Array.from(colors).sort(()=>Math.random()-0.5);
+        arr.forEach(c=> boardEl.appendChild(createTile(c)));
+      }
+
+      function onTileClick(e){
+        if(!running) return;
+        const clickedColor = rgbToHex(window.getComputedStyle(e.currentTarget).backgroundColor);
+        console.log('Clicked', clickedColor);
+        if(clickedColor === targetColor){
+          score += 10 * level;
+          log(`Correct! +${10*level} points`);
+          // small reward: add time
+          timeLeft += 2;
+          nextLevel();
+        } else {
+          score = Math.max(0, score - 5);
+          timeLeft = Math.max(0, timeLeft - 3);
+          log(`Wrong! -5 points, -3s`);
+          // small shake animation
+          e.currentTarget.animate([{transform:'scale(1)'},{transform:'scale(0.95)'},{transform:'scale(1)'}],{duration:180})
+        }
+        updateUI();
+      }
+
+      function nextLevel(){
+        level += 1;
+        tilesCount = Math.min(16, tilesCount + 1); // board grows until 16 tiles
+        setTargetColor(randomColor());
+        renderBoard();
+      }
+
+      function updateUI(){
+        scoreEl.textContent = score;
+        timeEl.textContent = timeLeft;
+        levelEl.textContent = level;
+      }
+
+      function startGame(){
+        if(running) return;
+        running = true;
+        score = 0; timeLeft = 30; level = 1; tilesCount = 8;
+        setTargetColor(randomColor());
+        renderBoard();
+        updateUI();
+        log('Game started');
+        timerId = setInterval(()=>{
+          timeLeft -= 1;
+          if(timeLeft <= 0){ endGame(); }
+          updateUI();
+        },1000);
+      }
+
+      function endGame(){
+        clearInterval(timerId); timerId = null; running = false;
+        log(`Game over — final score ${score}`);
+        alert(`Game over! Your score: ${score}`);
+      }
+
+      function resetGame(){
+        clearInterval(timerId); timerId = null; running = false;
+        score = 0; timeLeft = 30; level = 1; tilesCount = 8; targetColor = '#FFFFFF';
+        targetDisplay.textContent = targetColor; targetDisplay.style.background = 'transparent';
+        boardEl.innerHTML = '';
+        updateUI();
+        log('Game reset');
+      }
+
+      function rgbToHex(rgb){
+        // handles formats like 'rgb(12,34,56)' or 'rgba(12,34,56,1)'
+        const m = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/);
+        if(!m) return '#000000';
+        return '#'+[1,2,3].map(i=>parseInt(m[i]).toString(16).padStart(2,'0')).join('').toUpperCase();
+      }
+
+      // Event bindings
+      startBtn.addEventListener('click', startGame);
+      resetBtn.addEventListener('click', resetGame);
+
+      // Create initial empty board
+      for(let i=0;i<tilesCount;i++){ boardEl.appendChild(createTile('#0b2533')) }
+
+      // Expose for debugging in console
+      window.__colorCatcher = { startGame, resetGame, nextLevel };
+
+      // Accessibility: keyboard support — press number keys to click tiles
+      window.addEventListener('keydown', (e)=>{
+        if(!running) return;
+        const n = parseInt(e.key,10);
+        if(!Number.isNaN(n) && n>=1 && n<=9){
+          const idx = n-1;
+          const tile = boardEl.children[idx];
+          if(tile) tile.click();
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
